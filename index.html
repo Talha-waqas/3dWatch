@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AERA | The Pinnacle of Chronographic Artistry</title>
+    
+    <!-- Meta Tags for SEO -->
+    <meta name="description" content="Experience AERA Monolith. A next-generation luxury chronograph combining aerospace titanium, Swiss tourbillon engineering, and raw architectural design.">
+    <meta property="og:title" content="AERA | Next-Generation Luxury Timepieces">
+    <meta property="og:description" content="Where high-end design meets Swiss precision engineering. Explore the AERA Monolith collection.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons (Lucide via CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Styling -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Noise Texture Overlay for Film Grain Aesthetic -->
+    <div class="noise-overlay"></div>
+
+    <!-- WebGL Canvas for 3D watch rendering -->
+    <div class="canvas-container">
+        <canvas id="canvas-3d"></canvas>
+    </div>
+
+    <!-- Transparent Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" id="nav-logo">A E R A</a>
+            <nav class="nav-menu">
+                <a href="#hero" class="nav-link active">Home</a>
+                <a href="#craftsmanship" class="nav-link">Craftsmanship</a>
+                <a href="#materials" class="nav-link">Materials</a>
+                <a href="#exploded" class="nav-link">Exploded View</a>
+                <a href="#collections" class="nav-link">Collections</a>
+                <a href="#story" class="nav-link">Story</a>
+            </nav>
+            <div class="nav-cta">
+                <a href="#cta" class="btn btn-nav magnetic">Reserve Timepiece</a>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Toggle Menu">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="content-wrapper">
+
+        <!-- HERO SECTION -->
+        <section id="hero" class="hero-section">
+            <div class="hero-content">
+                <span class="hero-tagline uppercase-label">Fine Swiss Horology</span>
+                <h1 class="hero-title reveal-text">MONOLITH</h1>
+                <p class="hero-subtitle">Architectural design. Aerospace engineering. A testament to time itself.</p>
+                <div class="hero-actions">
+                    <a href="#collections" class="btn btn-primary magnetic">Explore Collection</a>
+                    <a href="#exploded" class="btn btn-secondary magnetic">Watch Explode <i data-lucide="chevron-right" class="btn-icon"></i></a>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <span class="scroll-text uppercase-label">Scroll to Explore</span>
+                <div class="scroll-mouse">
+                    <div class="scroll-wheel"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CRAFTSMANSHIP SECTION -->
+        <section id="craftsmanship" class="craftsmanship-section">
+            <div class="section-container">
+                <div class="grid-craft">
+                    <div class="craft-content">
+                        <span class="section-tag uppercase-label">The Art of Creation</span>
+                        <h2 class="section-title">0.02mm Tolerances. Infinite Dedication.</h2>
+                        <p class="section-desc">Each AERA watch requires over 450 hours of hand-finishing, engraving, and meticulous assembly. Every structural component, down to the smallest micro-cog, is chamfered and polished by hand in our Swiss workshop.</p>
+                        
+                        <div class="craft-stats">
+                            <div class="stat-item">
+                                <span class="stat-num">450+</span>
+                                <span class="stat-label">Hours of Hand-Finishing</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-num">28.8k</span>
+                                <span class="stat-label">Vibrations per Hour</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="craft-visuals">
+                        <div class="craft-card glass-card parallax-item" data-speed="1.1">
+                            <img src="assets/images/craftsmanship_1.png" alt="Tourbillon Mechanical Details" class="craft-img">
+                            <div class="craft-card-glow"></div>
+                            <span class="craft-card-label">Swiss Tourbillon Movement</span>
+                        </div>
+                        <div class="craft-card glass-card parallax-item" data-speed="0.9">
+                            <img src="assets/images/craftsmanship_2.png" alt="Watch Case Polish" class="craft-img">
+                            <div class="craft-card-glow"></div>
+                            <span class="craft-card-label">Titanium Bezel Polishing</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MATERIALS SECTION -->
+        <section id="materials" class="materials-section">
+            <div class="section-container">
+                <div class="section-header center">
+                    <span class="section-tag uppercase-label">Elements of Excellence</span>
+                    <h2 class="section-title">Forged from the Extreme</h2>
+                    <p class="section-desc max-w-600">We utilize only space-grade alloys and diamond-hard crystal layers to guarantee unmatched durability and scratch resistance.</p>
+                </div>
+                
+                <div class="materials-grid">
+                    <div class="material-card glass-card" data-material="titanium">
+                        <div class="material-icon">
+                            <i data-lucide="shield"></i>
+                        </div>
+                        <h3>Grade 5 Titanium</h3>
+                        <p>Used in aerospace, offering double the strength of steel at half the weight. Hypoallergenic and highly corrosion-resistant.</p>
+                        <span class="material-action uppercase-label">Simulate Material</span>
+                        <div class="material-card-reflection"></div>
+                    </div>
+
+                    <div class="material-card glass-card" data-material="gold">
+                        <div class="material-icon">
+                            <i data-lucide="sparkles"></i>
+                        </div>
+                        <h3>18K Rose Gold</h3>
+                        <p>A proprietary gold-copper alloy that retains its deep warm luxury hue under the harshest environmental exposures.</p>
+                        <span class="material-action uppercase-label">Simulate Material</span>
+                        <div class="material-card-reflection"></div>
+                    </div>
+
+                    <div class="material-card glass-card" data-material="sapphire">
+                        <div class="material-icon">
+                            <i data-lucide="gem"></i>
+                        </div>
+                        <h3>Sapphire Crystal</h3>
+                        <p>Rated 9 on the Mohs hardness scale. Double-sided anti-reflective coating renders the glass virtually invisible.</p>
+                        <span class="material-action uppercase-label">Simulate Material</span>
+                        <div class="material-card-reflection"></div>
+                    </div>
+
+                    <div class="material-card glass-card" data-material="movement">
+                        <div class="material-icon">
+                            <i data-lucide="activity"></i>
+                        </div>
+                        <h3>Swiss Tourbillon</h3>
+                        <p>A self-winding gravity-defying escapement mechanism, offering an astounding 72-hour power reserve.</p>
+                        <span class="material-action uppercase-label">Simulate Material</span>
+                        <div class="material-card-reflection"></div>
+                    </div>
+
+                    <div class="material-card glass-card" data-material="ceramic">
+                        <div class="material-icon">
+                            <i data-lucide="layers"></i>
+                        </div>
+                        <h3>Zirconium Ceramic</h3>
+                        <p>Ultralight ceramic composite compound baked at 2,000°C for absolute scratch protection and high gloss finish.</p>
+                        <span class="material-action uppercase-label">Simulate Material</span>
+                        <div class="material-card-reflection"></div>
+                    </div>
+
+                    <div class="material-card glass-card" data-material="carbon">
+                        <div class="material-icon">
+                            <i data-lucide="cpu"></i>
+                        </div>
+                        <h3>NTPT Carbon Fiber</h3>
+                        <p>Multiple layers of parallel carbon filaments bonded with resin to form a highly unique, marbled luxury wave texture.</p>
+                        <span class="material-action uppercase-label">Simulate Material</span>
+                        <div class="material-card-reflection"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPLODED VIEW SECTION -->
+        <section id="exploded" class="exploded-section">
+            <div class="exploded-overlay">
+                <div class="exploded-header">
+                    <span class="section-tag uppercase-label">Inner Architecture</span>
+                    <h2 class="section-title">Anatomy of Precision</h2>
+                    <p class="section-desc">Scroll slowly to expand the Monolith and view its internal engineering assembly.</p>
+                </div>
+
+                <div class="exploded-labels">
+                    <!-- Bezel Label -->
+                    <div class="exploded-label-card glass-card position-1" data-target="bezel">
+                        <span class="label-num">01</span>
+                        <div class="label-info">
+                            <h4>Brushed Bezel</h4>
+                            <p>Octagonal shape with 8 functional gold alignment screws.</p>
+                        </div>
+                        <div class="label-line"></div>
+                    </div>
+
+                    <!-- Crystal Label -->
+                    <div class="exploded-label-card glass-card position-2" data-target="crystal">
+                        <span class="label-num">02</span>
+                        <div class="label-info">
+                            <h4>Sapphire Lens</h4>
+                            <p>Double-domed sapphire with anti-reflective coating.</p>
+                        </div>
+                        <div class="label-line"></div>
+                    </div>
+
+                    <!-- Dial & Hands Label -->
+                    <div class="exploded-label-card glass-card position-3" data-target="dial">
+                        <span class="label-num">03</span>
+                        <div class="label-info">
+                            <h4>Luminescent Dial</h4>
+                            <p>Super-LumiNova® indices and skeletal golden hands.</p>
+                        </div>
+                        <div class="label-line"></div>
+                    </div>
+
+                    <!-- Movement Label -->
+                    <div class="exploded-label-card glass-card position-4" data-target="movement">
+                        <span class="label-num">04</span>
+                        <div class="label-info">
+                            <h4>Tourbillon Caliber</h4>
+                            <p>Coaxial automatic mechanical movement with visible cogs.</p>
+                        </div>
+                        <div class="label-line"></div>
+                    </div>
+
+                    <!-- Case Label -->
+                    <div class="exploded-label-card glass-card position-5" data-target="case">
+                        <span class="label-num">05</span>
+                        <div class="label-info">
+                            <h4>Titanium Case</h4>
+                            <p>Grade 5 sandblasted case protecting internal movements.</p>
+                        </div>
+                        <div class="label-line"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- COLLECTIONS SECTION -->
+        <section id="collections" class="collections-section">
+            <div class="collections-sticky-wrapper">
+                <div class="collections-scroll-container">
+                    
+                    <div class="collection-intro">
+                        <span class="section-tag uppercase-label">Exclusivity Redefined</span>
+                        <h2 class="section-title">The Three Chrono-Architectures</h2>
+                        <p class="section-desc">Each aesthetic is limited to only 50 numbered pieces globally. Explore the variants below to see how the materials alter the 3D model.</p>
+                        <div class="slide-indicator">
+                            <span class="slide-indicator-line"></span>
+                        </div>
+                    </div>
+
+                    <!-- Variant 1: Stealth -->
+                    <div class="collection-card glass-card" data-variant="stealth">
+                        <div class="card-image-wrap">
+                            <img src="assets/images/collection_stealth.png" alt="Stealth Edition Watch" class="collection-img">
+                        </div>
+                        <div class="collection-card-details">
+                            <span class="collection-serial">01 / 50</span>
+                            <h3>Monolith "Stealth"</h3>
+                            <p>Matte carbon fiber face coupled with dark gunmetal sandblasted titanium. Finished with glowing emerald dial markers.</p>
+                            <div class="collection-specs">
+                                <span>Bezel: Carbon</span>
+                                <span>Straps: Sport Rubber</span>
+                            </div>
+                            <button class="btn btn-secondary btn-card-interact">Equip Material</button>
+                        </div>
+                    </div>
+
+                    <!-- Variant 2: Royal Gold -->
+                    <div class="collection-card glass-card" data-variant="gold">
+                        <div class="card-image-wrap">
+                            <img src="assets/images/collection_gold.png" alt="Royal Gold Edition Watch" class="collection-img">
+                        </div>
+                        <div class="collection-card-details">
+                            <span class="collection-serial">02 / 50</span>
+                            <h3>Monolith "Royal"</h3>
+                            <p>Forged 18-karat rose gold case combined with high-contrast ceramic bezels. Featuring pure gold hands and cogs.</p>
+                            <div class="collection-specs">
+                                <span>Bezel: 18k Rose Gold</span>
+                                <span>Straps: Rose Gold Link</span>
+                            </div>
+                            <button class="btn btn-secondary btn-card-interact">Equip Material</button>
+                        </div>
+                    </div>
+
+                    <!-- Variant 3: Platinum Emerald -->
+                    <div class="collection-card glass-card" data-variant="emerald">
+                        <div class="card-image-wrap">
+                            <img src="assets/images/collection_emerald.png" alt="Emerald Edition Watch" class="collection-img">
+                        </div>
+                        <div class="collection-card-details">
+                            <span class="collection-serial">03 / 50</span>
+                            <h3>Monolith "Jade"</h3>
+                            <p>Sleek platinum outer case offset by an exquisite royal emerald sunburst dial. A watch with a rich heritage design.</p>
+                            <div class="collection-specs">
+                                <span>Bezel: Platinum</span>
+                                <span>Straps: Matte Charcoal Alligator</span>
+                            </div>
+                            <button class="btn btn-secondary btn-card-interact">Equip Material</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- STORY SECTION -->
+        <section id="story" class="story-section">
+            <div class="parallax-bg-wrapper">
+                <div class="story-glow-mesh"></div>
+            </div>
+            <div class="section-container">
+                <div class="story-layout">
+                    <div class="story-text">
+                        <span class="section-tag uppercase-label">Heritage & Vision</span>
+                        <h2 class="section-title text-parallax-reveal">Born in the Alps, Engineered for the Future</h2>
+                        <p class="story-paragraph">AERA was founded with a singular, uncompromising vision: to create timepieces that are not merely luxury items, but architectural monuments of chronometry. We combine the century-old watchmaking heritage of Switzerland with space-grade composite materials developed for exploration.</p>
+                        <p class="story-paragraph">Our artisans assemble every single tourbillon in total isolation, ensuring zero particulate contamination. The results are instruments of absolute accuracy, designed to survive centuries, carrying your legacy forward.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS SECTION -->
+        <section id="testimonials" class="testimonials-section">
+            <div class="section-container">
+                <div class="section-header center">
+                    <span class="section-tag uppercase-label">Connoisseur Review</span>
+                    <h2 class="section-title">Echoes of Prestige</h2>
+                </div>
+
+                <div class="testimonials-grid">
+                    <div class="testimonial-card glass-card">
+                        <p class="quote">"The Monolith is the first watch in a decade to challenge the layout structure of high-end sports timepieces. Its weight, materials, and depth of movement are spectacular."</p>
+                        <div class="reviewer-info">
+                            <span class="reviewer-name">Marcus Vance</span>
+                            <span class="reviewer-title">Editor-in-Chief, Haute Horology</span>
+                        </div>
+                        <i data-lucide="quote" class="quote-icon"></i>
+                    </div>
+
+                    <div class="testimonial-card glass-card">
+                        <p class="quote">"AERA has created a 3D structural sculpture. The way light rolls off the carbon fiber and titanium case mirrors the finest hypercar aerodynamics."</p>
+                        <div class="reviewer-info">
+                            <span class="reviewer-name">Elena Rostova</span>
+                            <span class="reviewer-title">Lead Architect, Rostova Studio</span>
+                        </div>
+                        <i data-lucide="quote" class="quote-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALL TO ACTION (CTA) -->
+        <section id="cta" class="cta-section">
+            <div class="cta-container">
+                <div class="cta-card glass-card">
+                    <div class="cta-glow-bg"></div>
+                    <span class="section-tag uppercase-label">Limited Allocations</span>
+                    <h2 class="cta-title">Begin Your Legacy</h2>
+                    <p class="cta-desc">Due to extreme craftsmanship constraints, only 150 pieces of the Monolith Series are generated per year. Request your private allocation briefing below.</p>
+                    
+                    <form class="cta-form" onsubmit="event.preventDefault(); alert('Allocation request received. A representative will contact you securely within 24 hours.');">
+                        <input type="email" placeholder="Enter your private secure email" required class="cta-input">
+                        <button type="submit" class="btn btn-primary btn-submit magnetic">Request Briefing</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-brand">
+                    <a href="#" class="footer-logo">A E R A</a>
+                    <p>The convergence of fine Swiss watchmaking, advanced materials science, and architectural aesthetics.</p>
+                </div>
+
+                <div class="footer-links-grid">
+                    <div class="footer-col">
+                        <h4>Collection</h4>
+                        <a href="#hero">Monolith Series</a>
+                        <a href="#materials">Materials Science</a>
+                        <a href="#exploded">Tourbillon Movement</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Company</h4>
+                        <a href="#story">Swiss Heritage</a>
+                        <a href="#craftsmanship">Craftsmen Studio</a>
+                        <a href="#testimonials">Press Reviews</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Legal</h4>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Allocation</a>
+                        <a href="#">Authentication Registry</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 AERA Horology. All rights reserved. Registered Swiss Brand.</p>
+                <div class="footer-socials">
+                    <a href="#" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+                    <a href="#" aria-label="YouTube"><i data-lucide="youtube"></i></a>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Scripts (Local Libraries) -->
+    <script src="libs/three.min.js"></script>
+    <script src="libs/gsap.min.js"></script>
+    <script src="libs/ScrollTrigger.min.js"></script>
+    <script src="libs/lenis.min.js"></script>
+
+    <!-- Project Logic scripts -->
+    <script src="watch3d.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

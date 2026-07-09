@@ -1,0 +1,13 @@
+{
+  "name": "aera-watch-experience",
+  "version": "1.0.0",
+  "description": "Premium 3D Luxury Watch Landing Page Experience",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx http-server -p 3000"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
