@@ -39,32 +39,23 @@ document.addEventListener("DOMContentLoaded", () => {
 // --- Lenis Smooth Scrolling ---
 function initSmoothScroll() {
     lenis = new Lenis({
-        duration: 1.2,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Apple-like easing
-        direction: 'vertical',
-        gestureDirection: 'vertical',
-        smooth: true,
-        mouseMultiplier: 1,
-        smoothTouch: false,
-        touchMultiplier: 2,
-        infinite: false,
+        lerp: 0.08, // Buttery soft easing (lower = softer)
+        wheelMultiplier: 0.95, // Refined scroll wheel distance
+        normalizeWheel: true, // Smooths out mousewheels across Mac & Windows
+        smoothWheel: true,
+        gestureOrientation: 'vertical',
+        smoothTouch: false
     });
 
-    // Tick lenis scroll loop inside requestAnimationFrame
+    // Tick lenis scroll loop inside requestAnimationFrame (native RAF loop only)
     function raf(time) {
         lenis.raf(time);
         requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
 
-    // Sync ScrollTrigger with Lenis
+    // Sync ScrollTrigger with Lenis scroll positions
     lenis.on('scroll', ScrollTrigger.update);
-
-    gsap.ticker.add((time) => {
-        lenis.raf(time * 1000);
-    });
-
-    gsap.ticker.lagSmoothing(0);
 }
 
 // --- Magnetic Micro-Interactions for Buttons ---
