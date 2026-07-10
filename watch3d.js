@@ -33,6 +33,121 @@ let targetExplodeFactor = 0;
 let mechanicalGears = [];
 let balanceWheel;
 
+// --- Procedural Studio Light Reflection Environment Map (PMREM alternative) ---
+function createEnvMap() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 256;
+    const ctx = canvas.getContext('2d');
+    
+    // Gradient dark studio background
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    bgGrad.addColorStop(0, '#050505');
+    bgGrad.addColorStop(0.5, '#151518');
+    bgGrad.addColorStop(1, '#050505');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Soft vertical light stripe 1 (warmer key light stripe)
+    let grad = ctx.createLinearGradient(40, 0, 140, 0);
+    grad.addColorStop(0, 'rgba(255, 235, 210, 0)');
+    grad.addColorStop(0.5, 'rgba(255, 235, 210, 0.9)');
+    grad.addColorStop(1, 'rgba(255, 235, 210, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(40, 0, 100, canvas.height);
+    
+    // Soft vertical light stripe 2 (cool rim light stripe)
+    grad = ctx.createLinearGradient(320, 0, 420, 0);
+    grad.addColorStop(0, 'rgba(210, 240, 255, 0)');
+    grad.addColorStop(0.5, 'rgba(210, 240, 255, 0.85)');
+    grad.addColorStop(1, 'rgba(210, 240, 255, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(320, 0, 100, canvas.height);
+    
+    // Ambient top horizon highlight
+    grad = ctx.createLinearGradient(0, 20, 0, 90);
+    grad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+    grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.7)');
+    grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 20, canvas.width, 70);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    return texture;
+}
+
+// --- Procedural Waffle Tapisserie bump texture for Dial ---
+function createDialTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 128;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+    
+    // Base mid-gray (neutral bump value)
+    ctx.fillStyle = '#808080';
+    ctx.fillRect(0, 0, 128, 128);
+    
+    // Draw waffle grids
+    const boxSize = 8;
+    for (let x = 0; x < 128; x += boxSize) {
+        for (let y = 0; y < 128; y += boxSize) {
+            // Grooves
+            ctx.strokeStyle = '#555555';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x, y, boxSize, boxSize);
+            
+            // Raised centers
+            ctx.fillStyle = '#a0a0a0';
+            ctx.fillRect(x + 1, y + 1, boxSize - 2, boxSize - 2);
+            
+            // Bevel light
+            ctx.fillStyle = '#dcdcdc';
+            ctx.fillRect(x + 1, y + 1, boxSize/2 - 1, boxSize/2 - 1);
+            
+            // Bevel shadow
+            ctx.fillStyle = '#404040';
+            ctx.fillRect(x + boxSize/2, y + boxSize/2, boxSize/2 - 1, boxSize/2 - 1);
+        }
+    }
+    
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(5, 5); // Fine grid repetition
+    return texture;
+}
+
+// --- Soft contact drop shadow mesh ---
+function createContactShadow() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 128;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+    
+    // Soft radial blur shadow gradient
+    const grad = ctx.createRadialGradient(64, 64, 4, 64, 64, 60);
+    grad.addColorStop(0, 'rgba(0, 0, 0, 0.7)');
+    grad.addColorStop(0.3, 'rgba(0, 0, 0, 0.35)');
+    grad.addColorStop(0.7, 'rgba(0, 0, 0, 0.08)');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 128, 128);
+    
+    const texture = new THREE.CanvasTexture(canvas);
+    const shadowGeo = new THREE.PlaneGeometry(5.0, 5.0);
+    const shadowMat = new THREE.MeshBasicMaterial({
+        map: texture,
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.MultiplyBlending
+    });
+    
+    const shadowMesh = new THREE.Mesh(shadowGeo, shadowMat);
+    shadowMesh.position.set(0, 0, -2.2); // Just behind the watch
+    return shadowMesh;
+}
+
 // --- Initialize Three.js Scene ---
 function init3D() {
     const container = document.querySelector('.canvas-container');
@@ -42,6 +157,14 @@ function init3D() {
     // 1. Scene setup
     scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x050505, 0.08);
+
+    // Dynamic environment reflection mapping
+    const envMap = createEnvMap();
+    scene.environment = envMap;
+
+    // Static contact drop shadow behind the watch
+    const shadow = createContactShadow();
+    scene.add(shadow);
 
     // 2. Camera setup
     camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
@@ -54,7 +177,7 @@ function init3D() {
         alpha: true,
         powerPreference: "high-performance"
     });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio for performance
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.25;
@@ -83,35 +206,52 @@ function init3D() {
 
 // --- Define Premium PBR Materials ---
 function createMaterials() {
+    // Generate Dial Bump map
+    const dialBump = createDialTexture();
+
     // 1. Titanium (Case, bezel accents)
-    watchMaterials.titanium = new THREE.MeshStandardMaterial({
+    watchMaterials.titanium = new THREE.MeshPhysicalMaterial({
         color: 0x555861,
-        metalness: 0.95,
-        roughness: 0.35,
+        metalness: 0.98,
+        roughness: 0.22,
+        clearcoat: 0.15,
+        clearcoatRoughness: 0.1,
+        envMapIntensity: 1.6,
         name: 'titanium'
     });
 
-    // 2. Dark Titanium/Gunmetal
-    watchMaterials.gunmetal = new THREE.MeshStandardMaterial({
-        color: 0x222326,
-        metalness: 0.95,
-        roughness: 0.45,
+    // 2. Dark Titanium/Gunmetal (used on waffle dial plate)
+    watchMaterials.gunmetal = new THREE.MeshPhysicalMaterial({
+        color: 0x1f2024,
+        metalness: 0.9,
+        roughness: 0.28,
+        bumpMap: dialBump,
+        bumpScale: 0.015,
+        envMapIntensity: 1.4,
         name: 'gunmetal'
     });
 
     // 3. 18K Rose Gold
-    watchMaterials.gold = new THREE.MeshStandardMaterial({
-        color: 0xd4af37,
+    watchMaterials.gold = new THREE.MeshPhysicalMaterial({
+        color: 0xe0a98c, // Real warm rose gold
         metalness: 0.98,
-        roughness: 0.18,
+        roughness: 0.15,
+        clearcoat: 0.4,
+        clearcoatRoughness: 0.05,
+        envMapIntensity: 1.8,
         name: 'gold'
     });
 
-    // 4. Emerald Green Dial
-    watchMaterials.emerald = new THREE.MeshStandardMaterial({
+    // 4. Emerald Green Dial (Waffle texture Dial)
+    watchMaterials.emerald = new THREE.MeshPhysicalMaterial({
         color: 0x064e3b,
-        metalness: 0.6,
+        metalness: 0.5,
         roughness: 0.12,
+        clearcoat: 0.7,
+        clearcoatRoughness: 0.05,
+        bumpMap: dialBump,
+        bumpScale: 0.02,
+        envMapIntensity: 1.5,
         name: 'emerald'
     });
 
@@ -122,23 +262,29 @@ function createMaterials() {
         roughness: 0.05,
         clearcoat: 1.0,
         clearcoatRoughness: 0.02,
+        envMapIntensity: 1.2,
         name: 'ceramic'
     });
 
-    // 6. Carbon Fiber Texture (We simulate with color bands)
-    watchMaterials.carbon = new THREE.MeshStandardMaterial({
-        color: 0x2a2a2d,
-        metalness: 0.3,
-        roughness: 0.6,
-        flatShading: true, // Gives structured look resembling carbon filament
+    // 6. Carbon Fiber Texture
+    watchMaterials.carbon = new THREE.MeshPhysicalMaterial({
+        color: 0x222224,
+        metalness: 0.35,
+        roughness: 0.35,
+        clearcoat: 0.8,
+        clearcoatRoughness: 0.1,
+        envMapIntensity: 1.3,
         name: 'carbon'
     });
 
     // 7. Platinum
-    watchMaterials.platinum = new THREE.MeshStandardMaterial({
+    watchMaterials.platinum = new THREE.MeshPhysicalMaterial({
         color: 0xdcdfe4,
         metalness: 1.0,
-        roughness: 0.12,
+        roughness: 0.15,
+        clearcoat: 0.5,
+        clearcoatRoughness: 0.08,
+        envMapIntensity: 1.7,
         name: 'platinum'
     });
 
@@ -146,13 +292,13 @@ function createMaterials() {
     watchMaterials.sapphire = new THREE.MeshPhysicalMaterial({
         color: 0xe0f2fe,
         transparent: true,
-        opacity: 0.35,
-        roughness: 0.02,
-        metalness: 0.1,
-        transmission: 0.9,
+        opacity: 0.3,
+        roughness: 0.01,
+        metalness: 0.08,
+        transmission: 0.92,
         ior: 1.76, // Index of refraction of sapphire
-        thickness: 0.3,
-        specularIntensity: 1.0,
+        thickness: 0.25,
+        specularIntensity: 1.2,
         clearcoat: 1.0,
         clearcoatRoughness: 0.01,
         name: 'sapphire'
@@ -162,15 +308,16 @@ function createMaterials() {
     watchMaterials.lume = new THREE.MeshStandardMaterial({
         color: 0xa7f3d0,
         emissive: 0x10b981,
-        emissiveIntensity: 1.8,
+        emissiveIntensity: 2.2,
         name: 'lume'
     });
 
     // 10. Golden Escapement Gears
-    watchMaterials.gears = new THREE.MeshStandardMaterial({
+    watchMaterials.gears = new THREE.MeshPhysicalMaterial({
         color: 0xe5c158,
-        metalness: 0.9,
-        roughness: 0.22,
+        metalness: 0.98,
+        roughness: 0.18,
+        envMapIntensity: 1.5,
         name: 'gears'
     });
 
@@ -213,6 +360,19 @@ function buildWatch() {
     caseMesh.receiveShadow = true;
     caseGroup.add(caseMesh);
 
+    // Shiny gold case bevel rings (Top and Bottom) to catch light highlights!
+    const caseBevelGeo = new THREE.TorusGeometry(2.19, 0.025, 8, 64);
+    
+    const caseBevelTop = new THREE.Mesh(caseBevelGeo, watchMaterials.gold);
+    caseBevelTop.rotation.x = Math.PI / 2;
+    caseBevelTop.rotation.y = Math.PI / 8;
+    caseBevelTop.position.y = 0.35;
+    caseGroup.add(caseBevelTop);
+    
+    const caseBevelBottom = caseBevelTop.clone();
+    caseBevelBottom.position.y = -0.35;
+    caseGroup.add(caseBevelBottom);
+
     // Caseback details
     const caseBackGeo = new THREE.CylinderGeometry(1.9, 1.9, 0.15, 32);
     const caseBackMesh = new THREE.Mesh(caseBackGeo, watchMaterials.gunmetal);
@@ -243,6 +403,14 @@ function buildWatch() {
     bezelMesh.rotation.y = Math.PI / 8;
     bezelMesh.position.y = 0.38;
     bezelGroup.add(bezelMesh);
+
+    // Shiny gold outer bevel ring for the bezel
+    const bezelGoldBevelGeo = new THREE.TorusGeometry(2.04, 0.02, 8, 64);
+    const bezelGoldBevel = new THREE.Mesh(bezelGoldBevelGeo, watchMaterials.gold);
+    bezelGoldBevel.rotation.x = Math.PI / 2;
+    bezelGoldBevel.rotation.y = Math.PI / 8;
+    bezelGoldBevel.position.y = 0.46;
+    bezelGroup.add(bezelGoldBevel);
 
     // Inner bezel ring (polished titanium edge)
     const bezelInnerGeo = new THREE.TorusGeometry(1.8, 0.05, 8, 32);
@@ -282,6 +450,55 @@ function buildWatch() {
     const dialPlate = new THREE.Mesh(dialPlateGeo, watchMaterials.gunmetal);
     dialPlate.position.y = 0.28;
     dialGroup.add(dialPlate);
+
+    // Detailed Date Window at 6 o'clock
+    const dateFrameGeo = new THREE.BoxGeometry(0.38, 0.05, 0.26);
+    const dateFrame = new THREE.Mesh(dateFrameGeo, watchMaterials.gold);
+    dateFrame.position.set(0, 0.301, 0.95);
+    dialGroup.add(dateFrame);
+
+    const datePlateGeo = new THREE.PlaneGeometry(0.28, 0.18);
+    const dateCanvas = document.createElement('canvas');
+    dateCanvas.width = 64;
+    dateCanvas.height = 64;
+    const dateCtx = dateCanvas.getContext('2d');
+    dateCtx.fillStyle = '#ffffff';
+    dateCtx.fillRect(0, 0, 64, 64);
+    dateCtx.fillStyle = '#050505';
+    dateCtx.font = 'bold 36px "Space Grotesk", sans-serif';
+    dateCtx.textAlign = 'center';
+    dateCtx.textBaseline = 'middle';
+    dateCtx.fillText('10', 32, 32);
+    const dateTex = new THREE.CanvasTexture(dateCanvas);
+    const dateMat = new THREE.MeshBasicMaterial({ map: dateTex });
+    const datePlate = new THREE.Mesh(datePlateGeo, dateMat);
+    datePlate.rotation.x = -Math.PI / 2;
+    datePlate.position.set(0, 0.328, 0.95);
+    dialGroup.add(datePlate);
+
+    // Dimensional gold AERA plaque at 12 o'clock
+    const logoPlaqueGeo = new THREE.BoxGeometry(0.65, 0.04, 0.18);
+    const logoPlaque = new THREE.Mesh(logoPlaqueGeo, watchMaterials.gold);
+    logoPlaque.position.set(0, 0.301, -0.95);
+    dialGroup.add(logoPlaque);
+
+    const logoCanvas = document.createElement('canvas');
+    logoCanvas.width = 128;
+    logoCanvas.height = 64;
+    const logoCtx = logoCanvas.getContext('2d');
+    logoCtx.fillStyle = '#0a0a0d';
+    logoCtx.fillRect(0, 0, 128, 64);
+    logoCtx.fillStyle = '#e0a98c'; // gold lettering
+    logoCtx.font = 'bold 22px "Syne", sans-serif';
+    logoCtx.textAlign = 'center';
+    logoCtx.textBaseline = 'middle';
+    logoCtx.fillText('A E R A', 64, 32);
+    const logoTex = new THREE.CanvasTexture(logoCanvas);
+    const logoMat = new THREE.MeshBasicMaterial({ map: logoTex });
+    const logoPlaqueText = new THREE.Mesh(new THREE.PlaneGeometry(0.55, 0.12), logoMat);
+    logoPlaqueText.rotation.x = -Math.PI / 2;
+    logoPlaqueText.position.set(0, 0.328, -0.95);
+    dialGroup.add(logoPlaqueText);
 
     // Inner ring (tachy bezel ring)
     const innerRingGeo = new THREE.TorusGeometry(1.68, 0.06, 16, 64);
@@ -669,19 +886,19 @@ function animate(time) {
     const curRotationY = targetRotationY + (mouseX * 0.18);
     const curRotationZ = targetRotationZ;
 
-    watchGroup.rotation.x += (curRotationX - watchGroup.rotation.x) * 0.08;
-    watchGroup.rotation.y += (curRotationY - watchGroup.rotation.y) * 0.08;
-    watchGroup.rotation.z += (curRotationZ - watchGroup.rotation.z) * 0.08;
+    watchGroup.rotation.x += (curRotationX - watchGroup.rotation.x) * 0.04;
+    watchGroup.rotation.y += (curRotationY - watchGroup.rotation.y) * 0.04;
+    watchGroup.rotation.z += (curRotationZ - watchGroup.rotation.z) * 0.04;
 
-    watchGroup.position.x += (targetPositionX - watchGroup.position.x) * 0.08;
-    watchGroup.position.y += (targetPositionY - watchGroup.position.y) * 0.08;
-    watchGroup.position.z += (targetPositionZ - watchGroup.position.z) * 0.08;
+    watchGroup.position.x += (targetPositionX - watchGroup.position.x) * 0.04;
+    watchGroup.position.y += (targetPositionY - watchGroup.position.y) * 0.04;
+    watchGroup.position.z += (targetPositionZ - watchGroup.position.z) * 0.04;
 
-    camera.position.z += (targetCameraZoom - camera.position.z) * 0.08;
+    camera.position.z += (targetCameraZoom - camera.position.z) * 0.04;
 
     // 4. Explode translation along Y axis (Z relative to the face orientation of the watch)
     // Z spacing mapping
-    explodeFactor += (targetExplodeFactor - explodeFactor) * 0.06;
+    explodeFactor += (targetExplodeFactor - explodeFactor) * 0.035;
     
     bezelGroup.position.y = 0.38 + (explodeFactor * 1.5);
     crystalGroup.position.y = 0.52 + (explodeFactor * 2.5);

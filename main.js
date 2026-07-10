@@ -272,7 +272,7 @@ function setupScrollTimelines() {
                 trigger: "#craftsmanship",
                 start: "top bottom",
                 end: "top top",
-                scrub: true,
+                scrub: 1.5,
                 onUpdate: (self) => {
                     const prog = self.progress;
                     targetPositionX = -1.3 * prog;
@@ -315,7 +315,7 @@ function setupScrollTimelines() {
                 trigger: "#materials",
                 start: "top bottom",
                 end: "top top",
-                scrub: true,
+                scrub: 1.5,
                 onUpdate: (self) => {
                     const prog = self.progress;
                     targetPositionX = -1.3 + (2.6 * prog);
@@ -346,7 +346,7 @@ function setupScrollTimelines() {
                 trigger: "#exploded",
                 start: "top bottom",
                 end: "top 40%",
-                scrub: true,
+                scrub: 1.5,
                 onUpdate: (self) => {
                     const prog = self.progress;
                     targetPositionX = 1.3 - (1.3 * prog);
@@ -364,7 +364,7 @@ function setupScrollTimelines() {
                 trigger: "#exploded",
                 start: "top top",
                 end: "bottom bottom",
-                scrub: true,
+                scrub: 1.5,
                 onUpdate: (self) => {
                     const progress = self.progress;
                     targetExplodeFactor = progress * 1.05;
@@ -386,7 +386,7 @@ function setupScrollTimelines() {
                 trigger: "#collections",
                 start: "top top",
                 end: "bottom bottom",
-                scrub: true,
+                scrub: 1.5,
                 pin: ".collections-sticky-wrapper",
             }
         });
@@ -400,7 +400,7 @@ function setupScrollTimelines() {
             trigger: "#collections",
             start: "top top",
             end: "bottom bottom",
-            scrub: true,
+            scrub: 1.5,
             onUpdate: (self) => {
                 const prog = self.progress;
                 targetExplodeFactor = 0;
@@ -433,7 +433,7 @@ function setupScrollTimelines() {
                 trigger: "#story",
                 start: "top bottom",
                 end: "top top",
-                scrub: true,
+                scrub: 1.5,
                 onUpdate: (self) => {
                     const prog = self.progress;
                     targetPositionX = 0;
@@ -464,7 +464,7 @@ function setupScrollTimelines() {
                 trigger: "#cta",
                 start: "top bottom",
                 end: "bottom bottom",
-                scrub: true,
+                scrub: 1.5,
                 onUpdate: (self) => {
                     const prog = self.progress;
                     targetPositionX = 0;
@@ -486,7 +486,7 @@ function setupScrollTimelines() {
                 trigger: "#craftsmanship",
                 start: "top bottom",
                 end: "top top",
-                scrub: true,
+                scrub: 1.5,
                 onUpdate: (self) => {
                     const prog = self.progress;
                     targetPositionX = 0;
@@ -515,7 +515,7 @@ function setupScrollTimelines() {
                 trigger: "#materials",
                 start: "top bottom",
                 end: "top top",
-                scrub: true,
+                scrub: 1.5,
                 onUpdate: (self) => {
                     const prog = self.progress;
                     targetPositionX = 0;
@@ -545,7 +545,7 @@ function setupScrollTimelines() {
                 trigger: "#exploded",
                 start: "top bottom",
                 end: "top top",
-                scrub: true,
+                scrub: 1.5,
                 onUpdate: (self) => {
                     const prog = self.progress;
                     targetPositionX = 0;
@@ -563,7 +563,7 @@ function setupScrollTimelines() {
                 trigger: "#exploded",
                 start: "top top",
                 end: "bottom bottom",
-                scrub: true,
+                scrub: 1.5,
                 onUpdate: (self) => {
                     const progress = self.progress;
                     targetExplodeFactor = progress * 0.95;
@@ -604,7 +604,7 @@ function setupScrollTimelines() {
                 trigger: "#cta",
                 start: "top bottom",
                 end: "bottom bottom",
-                scrub: true,
+                scrub: 1.5,
                 onUpdate: (self) => {
                     const prog = self.progress;
                     targetPositionX = 0;
